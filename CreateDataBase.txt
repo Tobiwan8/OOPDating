@@ -1,0 +1,44 @@
+use master
+go
+
+create database OOPDatingDB
+go
+use OOPDatingDB
+go
+
+create table [Account](
+ID int identity primary key,
+AccountName nvarchar(50) not null,
+[password] nvarchar(50) not null
+)
+
+create table [ZipcodeCity](
+Zipcode nchar(4) primary key,
+City nvarchar(50) not null
+)
+
+
+create table [Profile](
+ID int identity primary key not null,
+FirstName nvarchar(50) not null,
+LastName nvarchar(50) not null,
+DoB date not null,
+Gender bit null,
+ProfileText nvarchar(500),
+AccountID int not null foreign key references [Account](ID),
+ZipcodeID nchar(4) not null foreign key references [ZipcodeCity](Zipcode)
+)
+
+create table [Chat](
+ID int identity primary key,
+SenderID int not null foreign key references [Profile](ID),
+ReceiverID int not null foreign key references [Profile](ID),
+ChatMessage nvarchar(500) not null
+)
+
+create table [Like](
+SenderID int not null foreign key references [Profile](ID),
+ReceiverID int not null foreign key references [Profile](ID),
+IsLiked bit default 0,
+CONSTRAINT PK_Chat PRIMARY KEY (SenderID,ReceiverID)
+)
