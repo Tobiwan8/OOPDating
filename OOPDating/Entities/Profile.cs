@@ -10,6 +10,5 @@
         public string? ProfileText { get; set; }
         public int AccountID { get; set; }
         public int ZipcodeID { get; set; }
-
     }
 }

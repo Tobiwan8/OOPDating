@@ -40,5 +40,5 @@ create table [Like](
 SenderID int not null foreign key references [Profile](ID),
 ReceiverID int not null foreign key references [Profile](ID),
 IsLiked bit default 0,
-CONSTRAINT PK_Chat PRIMARY KEY (SenderID,ReceiverID)
+CONSTRAINT PK_Like PRIMARY KEY (SenderID,ReceiverID)
 )
