@@ -13,7 +13,9 @@ main {
 }
 
 .sidebar h3 {
-    color: #000;
+    color: #FFF;
+    text-orientation:upright;
+    writing-mode: vertical-lr;
 }
 
 .top-row {
