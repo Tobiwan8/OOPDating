@@ -1,4 +1,4 @@
-﻿namespace OOPDating.Entities
+﻿namespace OOPDating.Interfaces
 {
     public interface ICommunication
     {

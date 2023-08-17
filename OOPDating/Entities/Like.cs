@@ -1,4 +1,6 @@
-﻿namespace OOPDating.Entities
+﻿using OOPDating.Interfaces;
+
+namespace OOPDating.Entities
 {
     public class Like : ICommunication
     {
