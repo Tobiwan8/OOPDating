@@ -4,11 +4,11 @@ namespace OOPDating.Interfaces
 {
     public interface IAccountRepository
     {
-        List<Account> GetAccounts();
-        Account GetAccount(int id);
-
-        bool UpdateAccountPw(Account account);
+        bool IsLoggedIn { get; set; }
         bool AddAccount(Account account);
         bool DeleteAccount(Account account);
+        bool UpdateAccountPw(Account account);
+        public Account GetAccount(string AccountName);
+        List<Account> GetAccounts();
     }
 }

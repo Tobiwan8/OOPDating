@@ -25,8 +25,7 @@ namespace OOPDating.Authentication
                 }
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, UserSession.UserName),
-                    new Claim(ClaimTypes.Role, UserSession.Role)
+                    new Claim(ClaimTypes.Name, UserSession.UserName)
                 }, "CustomAuth"));
                 return await Task.FromResult(new AuthenticationState(claimsPrincipal));
             }
@@ -45,8 +44,7 @@ namespace OOPDating.Authentication
                 await _sessionStorage.SetAsync("UserSession", userSession);
                 claimsPrincipal = new(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userSession.UserName),
-                    new Claim(ClaimTypes.Role, userSession.Role)
+                    new Claim(ClaimTypes.Name, userSession.UserName)
                 }));
             }
             else

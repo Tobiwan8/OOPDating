@@ -1,13 +1,22 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Web;
+using OOPDating.Authentication;
+using OOPDating.Global;
+using OOPDating.Interfaces;
+using OOPDating.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddAuthenticationCore();
 builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<IAccountService, AccountService>();
+AccessToDb.ConnectionString = builder.Configuration.GetConnectionString("OOPDatingDB");
 
 var app = builder.Build();
 
