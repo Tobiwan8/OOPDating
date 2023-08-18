@@ -121,7 +121,5 @@ namespace OOPDating.Repositories
                 return accounts;
             }
         }
-
-        public bool IsLoggedIn { get; set; }
     }
 }

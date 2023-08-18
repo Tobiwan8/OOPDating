@@ -4,7 +4,6 @@ namespace OOPDating.Interfaces
 {
     public interface IAccountRepository
     {
-        bool IsLoggedIn { get; set; }
         bool AddAccount(Account account);
         bool DeleteAccount(Account account);
         bool UpdateAccountPw(Account account);

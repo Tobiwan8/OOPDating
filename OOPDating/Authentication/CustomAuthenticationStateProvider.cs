@@ -19,7 +19,7 @@ namespace OOPDating.Authentication
             {
                 var UserSessionStorageResult = await _sessionStorage.GetAsync<UserSession>("UserSession");
                 var UserSession = UserSessionStorageResult.Success ? UserSessionStorageResult.Value : null;
-                if (UserSession != null)
+                if (UserSession == null)
                 {
                     return await Task.FromResult(new AuthenticationState(_anonymous));
                 }
