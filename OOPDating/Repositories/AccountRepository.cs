@@ -73,7 +73,7 @@ namespace OOPDating.Repositories
         public Account GetAccount(string AccountName)
         {
             Account account = new();
-            account.AccountName= AccountName;
+            account.AccountName = AccountName;
 
             string? SqlconString = connectionstring;
             using (var sqlCon = new SqlConnection(SqlconString))

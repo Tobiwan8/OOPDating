@@ -1,0 +1,85 @@
+﻿@page "/create"
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+@inject IJSRuntime js
+@inject IAccountService accountService
+
+<PageTitle>Create</PageTitle>
+
+<h3>Create</h3>
+<br />
+<input @bind="model.AccountName" class="form-control" placeholder="Account Name" />
+<br />
+<input @bind="model.Password" type="password" class="form-control" placeholder="Password" />
+<br />
+<button @onclick="Authenticate" class="btn btn-primary">Create</button>
+
+@if(AccountNameIsValid == true)
+{
+    <br />
+    <p>To finalize your account, you will need a profile - Please enter your information</p><br />
+    <input class="form-control" placeholder="First Name"/>
+    <br />
+    <input class="form-control" placeholder="Last Name" />
+    <br />
+    <input type="date" placeholder="yyyy/mm/dd"/>
+    <br />
+    <input name="gender" type="radio"/>
+    <input name="gender" type="radio"/>
+    <br />
+    <InputTextArea ></InputTextArea>
+    <br />
+    <input placeholder="ZipCode"/>
+}
+
+@code {
+    private bool AccountNameIsValid;
+
+    private class Model
+    {
+        public string? AccountName { get; set; }
+        public string? Password { get; set; }
+    }
+
+    private class ModelProfile
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime DoB { get; set; }
+        public string? Gender { get; set; }
+        public string? ProfileText { get; set; }
+        public int AccountId { get; set; }
+        public int ZipCode { get; set; }
+    }
+
+    Model model = new();
+    ModelProfile modelProfile = new();
+
+    private async Task Authenticate()
+    {
+        if (string.IsNullOrWhiteSpace(model.AccountName) || string.IsNullOrWhiteSpace(model.Password))
+        {
+            await js.InvokeVoidAsync("alert", "Please enter Account Name and Password");
+            return;
+        }
+
+        var userAccount = accountService.GetAccount(model.AccountName);
+
+        if (userAccount.ID != 0)
+        {
+            await js.InvokeVoidAsync("alert", "Username already in use");
+            return;
+        }
+
+        AccountNameIsValid = true;
+        navManager.NavigateTo("/create", true);
+
+        //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        //await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+        //    {
+        //        UserName = userAccount.AccountName
+        //    });
+
+        //navManager.NavigateTo("/", true);
+    }
+}
