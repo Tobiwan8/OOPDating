@@ -26,11 +26,17 @@
 
     private async Task Authenticate()
     {
+        if(string.IsNullOrWhiteSpace(model.AccountName) || string.IsNullOrWhiteSpace(model.Password))
+        {
+            await js.InvokeVoidAsync("alert", "Please enter Account Name and Password");
+            return;
+        }
+
         var userAccount = accountService.GetAccount(model.AccountName);
 
         if(userAccount == null || userAccount.Password != model.Password)
         {
-            await js.InvokeVoidAsync("Alert", "Invalid Account Name or Password");
+            await js.InvokeVoidAsync("alert", "Invalid Account Name or Password");
             return;
         }
 
