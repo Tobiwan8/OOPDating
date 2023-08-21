@@ -88,6 +88,7 @@ namespace OOPDating.Repositories
                     {
                         account.ID = (int)sdr["ID"];
                         account.AccountName = (string)sdr["AccountName"];
+                        account.Password = (string)sdr["Password"];
                     }
                 }
                 sqlCon.Close();

@@ -2,21 +2,18 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 @inject IJSRuntime js
-@inject AccountService accountService
+@inject IAccountService accountService
 
 <PageTitle>Login - OOP</PageTitle>
 
-<h1>Welcome to Only Ordinary People Dating</h1>
-To enter this holy dungeon of OOP, either login or enlist yourself to this epic adventure, and begin your journey towards the one thing we all seek - <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" target="_blank">euphoria</a>.
-<br />
 <h3>Login</h3>
 <br />
 <input @bind="model.AccountName" class="form-control" placeholder="Account Name" />
 <br />
 <input @bind="model.Password" type="password" id="Password" class="form-control" placeholder="Password" />
 <br />
-<button @onclick="Authenticate" btn-primary">Login</button>
-<button type="submit" class="btn btn-primary">Create</button>
+<button @onclick="Authenticate" class="btn btn-primary">Login</button>
+@*<button type="submit" class="btn btn-primary">Create</button>*@
 
 @code {
     private class Model
