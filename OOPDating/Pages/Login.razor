@@ -8,12 +8,13 @@
 
 <h3>Login</h3>
 <br />
-<input @bind="model.AccountName" class="form-control" placeholder="Account Name" />
-<br />
-<input @bind="model.Password" type="password" id="Password" class="form-control" placeholder="Password" />
-<br />
-<button @onclick="Authenticate" class="btn btn-primary">Login</button>
-@*<button type="submit" class="btn btn-primary">Create</button>*@
+<EditForm>
+    <input @bind="model.AccountName" class="form-control" placeholder="Account Name" />
+    <br />
+    <input @bind="model.Password" type="password" id="Password" class="form-control" placeholder="Password" />
+    <br />
+    <button @onclick="Authenticate" class="btn btn-primary">Login</button>
+</EditForm>
 
 @code {
     private class Model
