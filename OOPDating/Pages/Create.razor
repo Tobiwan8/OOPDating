@@ -23,7 +23,7 @@
     <br />
     <input @bind="profile.LastName" class="form-control" placeholder="Last Name" />
     <br />
-    <input @bind="profile.DoB" type="date" class="form-control"/>
+    <input @bind="profile.DoB" type="date" class="form-control" />
     <br />
     <label>Male:</label>
     <input name="gender" type="radio" value="Male" checked="@(profile.Gender == "Male")" @onclick="@(()=>profile.Gender = "Male")"/>
@@ -64,11 +64,17 @@
 
     private async Task Complete()
     {
-        if (!string.IsNullOrWhiteSpace(profile.FirstName) || !string.IsNullOrWhiteSpace(profile.LastName) || !string.IsNullOrWhiteSpace(profile.DoB.ToString()) || !string.IsNullOrWhiteSpace(profile.Gender) || !string.IsNullOrWhiteSpace(profile.ZipcodeID.ToString()))
+        if (DateTime.Now.Year - profile.DoB.Year < 18 || DateTime.Now.Year - profile.DoB.Year > 100)
         {
-            await js.InvokeVoidAsync("alert", $"{profile.FirstName} {profile.LastName}\n{profile.DoB.ToString()} {profile.Gender}\n{profile.ZipcodeID}");
+            await js.InvokeVoidAsync("alert", "Wow, wow, wow - You are either too young or too old for this");
             return;
         }
+
+        //if (!string.IsNullOrWhiteSpace(profile.FirstName) || !string.IsNullOrWhiteSpace(profile.LastName) || !string.IsNullOrWhiteSpace(profile.DoB.ToString()) || !string.IsNullOrWhiteSpace(profile.Gender) || !string.IsNullOrWhiteSpace(profile.ZipcodeID.ToString()))
+        //{
+        //    await js.InvokeVoidAsync("alert", $"{profile.FirstName} {profile.LastName}\n{profile.DoB.ToString("yyyy-MM-dd")} {profile.Gender}\n{profile.ZipcodeID}");
+        //    return;
+        //}
         await js.InvokeVoidAsync("alert", "Not Working");
     }
 }
