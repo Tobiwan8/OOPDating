@@ -1,6 +1,6 @@
 ﻿namespace OOPDating.Entities
 {
-    public class Profile
+    public class UserProfile
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
