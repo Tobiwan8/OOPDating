@@ -57,8 +57,8 @@ namespace OOPDating.Repositories
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("usp_UpdateAccountPw", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = account.ID;
-                sql_cmnd.Parameters.AddWithValue("@Password", SqlDbType.Int).Value = account.Password;
+                sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.Int).Value = account.ID;
+                sql_cmnd.Parameters.AddWithValue("@Password", SqlDbType.NVarChar).Value = account.Password;
 
                 int updated = sql_cmnd.ExecuteNonQuery();
                 sqlCon.Close();
