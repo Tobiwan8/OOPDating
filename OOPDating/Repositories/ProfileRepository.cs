@@ -10,7 +10,7 @@ namespace OOPDating.Repositories
     public class ProfileRepository : IProfileRepository
     {
         private readonly string? connectionstring = AccessToDb.ConnectionString;
-        public bool AddProfile(UserProfile profile)
+        public bool AddProfile(UserProfile profile, Account account)
         {
             string? SqlconString = connectionstring;
             using (var sqlCon = new SqlConnection(SqlconString))
@@ -23,7 +23,7 @@ namespace OOPDating.Repositories
                 sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = profile.DoB;
                 sql_cmnd.Parameters.AddWithValue("@Gender", SqlDbType.NVarChar).Value = profile.Gender;
                 sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
-                sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = profile.AccountID;
+                sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = account.ID;
                 sql_cmnd.Parameters.AddWithValue("@ZipcodeID", SqlDbType.NChar).Value = profile.ZipcodeID;
 
                 int added = sql_cmnd.ExecuteNonQuery();

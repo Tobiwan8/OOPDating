@@ -3,6 +3,8 @@
 @inject NavigationManager navManager
 @inject IJSRuntime js
 @inject IAccountService accountService
+@inject IProfileService profileService
+@inject IZipcodeService zipcodeService
 
 <PageTitle>Create</PageTitle>
 
@@ -30,8 +32,13 @@
     <label>Female:</label>
     <input name="gender" type="radio" value="Female" checked="@(profile.Gender == "Female")" @onclick="@(()=>profile.Gender = "Female")" />
     <br />
-    <br />
-    <input @bind="profile.ZipcodeID" class="form-control" />
+    <label>Zipcode:</label>
+    <select onselect="@profile.ZipcodeID" class="form-control">
+        @foreach(var item in zipcodes)
+        {
+            <option value="@item">@item.Zipcode</option>
+        }
+    </select>
     <br />
     <button @onclick="Complete" class="btn btn-primary">Complete</button>
 }
@@ -39,8 +46,16 @@
 @code {
     public bool AccountNameIsValid;
 
-    Account account = new();
-    UserProfile profile = new();
+    private Account account = new();
+    private UserProfile profile = new();
+    private List<ZipcodeCity> zipcodes = new();
+
+    private List<ZipcodeCity> GetZipcodesForDropdown()
+    {
+        zipcodes = zipcodeService.GetZipcodeCities();
+
+        return zipcodes;
+    }
 
     private async Task Authenticate()
     {
@@ -59,27 +74,29 @@
         }
 
         AccountNameIsValid = true;
+        GetZipcodesForDropdown();
         StateHasChanged();
     }
 
     private async Task Complete()
     {
+        if (string.IsNullOrWhiteSpace(profile.FirstName) || string.IsNullOrWhiteSpace(profile.LastName) || string.IsNullOrWhiteSpace(profile.DoB.ToString()) || string.IsNullOrWhiteSpace(profile.Gender) || string.IsNullOrWhiteSpace(profile.ZipcodeID))
+        {
+            await js.InvokeVoidAsync("alert", "Please provide firstname, lastname, date of birth, gender and zipcode");
+            return;
+        }
+
         if(DateTime.Now.Year - profile.DoB.Year < 18 || DateTime.Now.Year - profile.DoB.Year > 100)
         {
             await js.InvokeVoidAsync("alert", "Wow, wow, wow - You are either too young or too old for this");
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(profile.FirstName) || string.IsNullOrWhiteSpace(profile.LastName) || string.IsNullOrWhiteSpace(profile.DoB.ToString()) || string.IsNullOrWhiteSpace(profile.Gender) || string.IsNullOrWhiteSpace(profile.ZipcodeID))
-        {
-            await js.InvokeVoidAsync("alert", "Please provide firstname, lastname, date of birth, gender and zipcode");
-            return;
-        }
-        //if (!string.IsNullOrWhiteSpace(profile.FirstName) || !string.IsNullOrWhiteSpace(profile.LastName) || !string.IsNullOrWhiteSpace(profile.DoB.ToString()) || !string.IsNullOrWhiteSpace(profile.Gender) || !string.IsNullOrWhiteSpace(profile.ZipcodeID.ToString()))
-        //{
-        //    await js.InvokeVoidAsync("alert", $"{profile.FirstName} {profile.LastName}\n{profile.DoB.ToString("yyyy-MM-dd")} {profile.Gender}\n{profile.ZipcodeID}");
-        //    return;
-        //}
-        await js.InvokeVoidAsync("alert", "Not Working");
+        accountService.AddAccount(account);
+        profileService.AddProfile(profile, account);
+
+        await js.InvokeVoidAsync("alert", "Well done. Please log in to start hunting");
+
+        navManager.NavigateTo("/", true);
     }
 }

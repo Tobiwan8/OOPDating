@@ -11,9 +11,9 @@ namespace OOPDating.Services
         {
             _repository = profileRepository;
         }
-        public void AddProfile(UserProfile profile)
+        public void AddProfile(UserProfile profile, Account account)
         {
-            _repository.AddProfile(profile);
+            _repository.AddProfile(profile, account);
         }
 
         public UserProfile GetProfile(UserProfile profile)

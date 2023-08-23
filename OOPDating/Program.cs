@@ -18,6 +18,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IAccountService, AccountService>();
 builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
+builder.Services.AddSingleton<IProfileRepository, ProfileRepository>();
+builder.Services.AddSingleton<IProfileService, ProfileService>();
+builder.Services.AddSingleton<IZipcodeRepository, ZipcodeCityRepository>();
+builder.Services.AddSingleton<IZipcodeService, ZipcodeService>();
 AccessToDb.ConnectionString = builder.Configuration.GetConnectionString("OOPDatingDB");
 
 var app = builder.Build();

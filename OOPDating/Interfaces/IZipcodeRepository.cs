@@ -1,6 +1,10 @@
-﻿namespace OOPDating.Interfaces
+﻿using OOPDating.Entities;
+
+namespace OOPDating.Interfaces
 {
-    public class IZipcodeRepository
+    public interface IZipcodeRepository
     {
+        public ZipcodeCity GetZipcode(string zipcode);
+        List<ZipcodeCity> GetZipcodes();
     }
 }

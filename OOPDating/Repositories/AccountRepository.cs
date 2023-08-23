@@ -70,10 +70,9 @@ namespace OOPDating.Repositories
             }
         }
 
-        public Account GetAccount(string AccountName)
+        public Account GetAccount(string accountName)
         {
             Account account = new();
-            account.AccountName = AccountName;
 
             string? SqlconString = connectionstring;
             using (var sqlCon = new SqlConnection(SqlconString))
@@ -81,7 +80,7 @@ namespace OOPDating.Repositories
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("usp_GetAccount", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@AccountName", SqlDbType.NVarChar).Value = account.AccountName;
+                sql_cmnd.Parameters.AddWithValue("@AccountName", SqlDbType.NVarChar).Value = accountName;
                 using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
                 {
                     while (sdr.Read())
