@@ -33,7 +33,7 @@
     <input name="gender" type="radio" value="Female" checked="@(profile.Gender == "Female")" @onclick="@(()=>profile.Gender = "Female")" />
     <br />
     <label>Zipcode:</label>
-    <select onselect="@profile.ZipcodeID" class="form-control">
+    <select @bind="profile.ZipcodeID" class="form-control">
         @foreach(var item in zipcodes)
         {
             <option value="@item">@item.Zipcode</option>
@@ -93,6 +93,7 @@
         }
 
         accountService.AddAccount(account);
+        account = accountService.GetAccount(account.AccountName);
         profileService.AddProfile(profile, account);
 
         await js.InvokeVoidAsync("alert", "Well done. Please log in to start hunting");

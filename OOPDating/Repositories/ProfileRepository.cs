@@ -4,6 +4,7 @@ using OOPDating.Global;
 using OOPDating.Interfaces;
 using OOPDating.Pages;
 using System.Data;
+using System.Globalization;
 
 namespace OOPDating.Repositories
 {
@@ -12,6 +13,8 @@ namespace OOPDating.Repositories
         private readonly string? connectionstring = AccessToDb.ConnectionString;
         public bool AddProfile(UserProfile profile, Account account)
         {
+            string formatedDoB = profile.DoB.ToString("yyyy-MM-dd");
+
             string? SqlconString = connectionstring;
             using (var sqlCon = new SqlConnection(SqlconString))
             {
@@ -20,7 +23,7 @@ namespace OOPDating.Repositories
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@FirstName", SqlDbType.NVarChar).Value = profile.FirstName;
                 sql_cmnd.Parameters.AddWithValue("@LastName", SqlDbType.NVarChar).Value = profile.LastName;
-                sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = profile.DoB;
+                sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = formatedDoB;
                 sql_cmnd.Parameters.AddWithValue("@Gender", SqlDbType.NVarChar).Value = profile.Gender;
                 sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
                 sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = account.ID;
@@ -98,6 +101,8 @@ namespace OOPDating.Repositories
 
         public bool UpdateProfile(UserProfile profile)
         {
+            string formatedDoB = profile.DoB.ToString("yyyy-MM-dd");
+
             string? SqlconString = connectionstring;
             using (var sqlCon = new SqlConnection(SqlconString))
             {
@@ -107,7 +112,7 @@ namespace OOPDating.Repositories
                 sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.Int).Value = profile.ID;
                 sql_cmnd.Parameters.AddWithValue("@FirstName", SqlDbType.NVarChar).Value = profile.FirstName;
                 sql_cmnd.Parameters.AddWithValue("@LastName", SqlDbType.NVarChar).Value = profile.LastName;
-                sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = profile.DoB;
+                sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = formatedDoB;
                 sql_cmnd.Parameters.AddWithValue("@Gender", SqlDbType.NVarChar).Value = profile.Gender;
                 sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
                 sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = profile.AccountID;
