@@ -2,7 +2,7 @@
 {
     public class ZipcodeCity
     {
-        public int Zipcode { get; set; }
+        public string? Zipcode { get; set; }
         public string? City { get; set; }
     }
 }

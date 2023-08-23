@@ -46,7 +46,7 @@
     {
         if (string.IsNullOrWhiteSpace(account.AccountName) || string.IsNullOrWhiteSpace(account.Password))
         {
-            await js.InvokeVoidAsync("alert", "Please enter Account Name and Password");
+            await js.InvokeVoidAsync("alert", "Please enter Accountname and Password");
             return;
         }
 
@@ -54,7 +54,7 @@
 
         if (newAccount.ID != 0)
         {
-            await js.InvokeVoidAsync("alert", "Username already in use");
+            await js.InvokeVoidAsync("alert", "Accountname already in use");
             return;
         }
 
@@ -70,9 +70,9 @@
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(profile.FirstName))
+        if (string.IsNullOrWhiteSpace(profile.FirstName) || string.IsNullOrWhiteSpace(profile.LastName) || string.IsNullOrWhiteSpace(profile.DoB.ToString()) || string.IsNullOrWhiteSpace(profile.Gender) || string.IsNullOrWhiteSpace(profile.ZipcodeID))
         {
-            await js.InvokeVoidAsync("alert", "Wow, wow, wow - You are either too young or too old for this");
+            await js.InvokeVoidAsync("alert", "Please provide firstname, lastname, date of birth, gender and zipcode");
             return;
         }
         //if (!string.IsNullOrWhiteSpace(profile.FirstName) || !string.IsNullOrWhiteSpace(profile.LastName) || !string.IsNullOrWhiteSpace(profile.DoB.ToString()) || !string.IsNullOrWhiteSpace(profile.Gender) || !string.IsNullOrWhiteSpace(profile.ZipcodeID.ToString()))
