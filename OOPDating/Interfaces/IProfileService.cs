@@ -8,6 +8,8 @@ namespace OOPDating.Interfaces
 
         UserProfile GetProfile(UserProfile profile);
 
+        UserProfile GetProfileByAccountID(Account account);
+
         void UpdateProfile(UserProfile profile);
 
         void AddProfile(UserProfile profile, Account account);

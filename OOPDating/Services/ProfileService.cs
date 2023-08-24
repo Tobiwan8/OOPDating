@@ -1,5 +1,6 @@
 ﻿using OOPDating.Entities;
 using OOPDating.Interfaces;
+using OOPDating.Pages;
 
 namespace OOPDating.Services
 {
@@ -19,6 +20,12 @@ namespace OOPDating.Services
         public UserProfile GetProfile(UserProfile profile)
         {
             UserProfile FindDBProfile = _repository.GetProfile(profile);
+            return FindDBProfile;
+        }
+
+        public UserProfile GetProfileByAccountID(Account account)
+        {
+            UserProfile FindDBProfile = _repository.GetProfileByAccountID(account);
             return FindDBProfile;
         }
 

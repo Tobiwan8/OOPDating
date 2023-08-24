@@ -1,8 +1,36 @@
-﻿@page "/Profile"
+﻿@page "/Profile/{profile}"
+@inject IAccountService accountService
+@inject IProfileService profileService
+@inject IZipcodeService zipcodeService
 @attribute [Authorize]
 
 <h3>Profile</h3>
+<br />
+<input @bind="profile.FirstName" class="form-control"/>
+<br />
+<input @bind="profile.LastName" class="form-control" />
+<br />
+<input @bind="profile.DoB" type="date" class="form-control" />
+<br />
+<label>Male:</label>
+<input name="gender" type="radio" value="Male" checked="@(profile.Gender == "Male")" @onclick="@(()=>profile.Gender = "Male")" />
+<label>Female:</label>
+<input name="gender" type="radio" value="Female" checked="@(profile.Gender == "Female")" @onclick="@(()=>profile.Gender = "Female")" />
+<br />
+<textarea @bind="profile.ProfileText" class="form-control">@profile.ProfileText</textarea>
+<br />
+<label>Zipcode:</label>
+<select @bind="profile.ZipcodeID" class="form-control">
+    @foreach (var item in zipcodes)
+    {
+        <option value="@item.Zipcode">@item.Zipcode</option>
+    }
+</select>
+<br />
+<button class="btn btn-primary">Edit</button>
 
 @code {
-
+    private Account account = new();
+    private UserProfile profile = new();
+    private List<ZipcodeCity> zipcodes = new();
 }

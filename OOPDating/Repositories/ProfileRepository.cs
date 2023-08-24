@@ -5,6 +5,7 @@ using OOPDating.Interfaces;
 using OOPDating.Pages;
 using System.Data;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OOPDating.Repositories
 {
@@ -49,6 +50,35 @@ namespace OOPDating.Repositories
                 SqlCommand sql_cmnd = new SqlCommand("usp_GetProfile", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.Int).Value = profile.ID;
+                using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        profile.ID = (int)sdr["ID"];
+                        profile.FirstName = (string)sdr["FirstName"];
+                        profile.LastName = (string)sdr["LastName"];
+                        profile.DoB = (DateTime)sdr["DoB"];
+                        profile.Gender = (string)sdr["Gender"];
+                        profile.ProfileText = (string)sdr["ProfileText"];
+                        profile.AccountID = (int)sdr["AccountID"];
+                        profile.ZipcodeID = (string)sdr["ZipcodeID"];
+                    }
+                }
+                sqlCon.Close();
+                return profile;
+            }
+        }
+
+        public UserProfile GetProfileByAccountID(Account account)
+        {
+            string? SqlconString = connectionstring;
+            UserProfile profile = new();
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetProfile", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.Int).Value = account.ID;
                 using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
                 {
                     while (sdr.Read())
