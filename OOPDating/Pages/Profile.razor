@@ -1,4 +1,4 @@
-﻿@page "/Profile/{profile}"
+﻿@page "/Profile/{accountName}"
 @inject IAccountService accountService
 @inject IProfileService profileService
 @inject IZipcodeService zipcodeService
@@ -30,6 +30,8 @@
 <button class="btn btn-primary">Edit</button>
 
 @code {
+    [Parameter] public string? accountName { get; set; }
+
     private Account account = new();
     private UserProfile profile = new();
     private List<ZipcodeCity> zipcodes = new();

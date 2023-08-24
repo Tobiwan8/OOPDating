@@ -93,7 +93,10 @@
         }
 
         accountService.AddAccount(account);
-        account = accountService.GetAccount(account.AccountName);
+        if(account.AccountName != null)
+        {
+            account = accountService.GetAccount(account.AccountName);            
+        }
         profileService.AddProfile(profile, account);
 
         await js.InvokeVoidAsync("alert", "Well done. Please log in to start hunting");

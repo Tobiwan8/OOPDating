@@ -1,5 +1,7 @@
 ﻿@page "/"
+@page "/{accountName}"
 @page "/home"
+@page "/home/{accountName}"
 
 <PageTitle>Welcome</PageTitle>
 
@@ -16,4 +18,5 @@
 </AuthorizeView>
 
 @code{
+    [Parameter] public string? accountName { get; set; }
 }

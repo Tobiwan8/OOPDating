@@ -35,10 +35,10 @@
 
         var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
         await customAuthStateProvider.UpdateAuthenticationState(new UserSession
-            {
-                UserName = userAccount.AccountName
-            });
+        {
+            UserName = userAccount.AccountName
+        });
 
-        navManager.NavigateTo("/", true);
+        navManager.NavigateTo($"/{account.AccountName}", true);
     }
 }
