@@ -36,7 +36,7 @@
     <select @bind="profile.ZipcodeID" class="form-control">
         @foreach(var item in zipcodes)
         {
-            <option value="@item">@item.Zipcode</option>
+            <option value="@item.Zipcode">@item.Zipcode</option>
         }
     </select>
     <br />
@@ -98,6 +98,6 @@
 
         await js.InvokeVoidAsync("alert", "Well done. Please log in to start hunting");
 
-        navManager.NavigateTo("/", true);
+        navManager.NavigateTo("/login", true);
     }
 }

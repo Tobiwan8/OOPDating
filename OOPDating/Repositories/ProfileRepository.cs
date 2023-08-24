@@ -21,16 +21,17 @@ namespace OOPDating.Repositories
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("usp_AddProfile", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@FirstName", SqlDbType.NVarChar).Value = profile.FirstName;
-                sql_cmnd.Parameters.AddWithValue("@LastName", SqlDbType.NVarChar).Value = profile.LastName;
-                sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = formatedDoB;
-                sql_cmnd.Parameters.AddWithValue("@Gender", SqlDbType.NVarChar).Value = profile.Gender;
-                sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
-                sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = account.ID;
-                sql_cmnd.Parameters.AddWithValue("@ZipcodeID", SqlDbType.NChar).Value = profile.ZipcodeID;
+                sql_cmnd.Parameters.AddWithValue("@FirstName", profile.FirstName);
+                sql_cmnd.Parameters.AddWithValue("@LastName", profile.LastName);
+                sql_cmnd.Parameters.AddWithValue("@DoB", formatedDoB);
+                sql_cmnd.Parameters.AddWithValue("@Gender", profile.Gender);
+                sql_cmnd.Parameters.AddWithValue("@ProfileText", DBNull.Value);
+                sql_cmnd.Parameters.AddWithValue("@AccountID", account.ID);
+                sql_cmnd.Parameters.AddWithValue("@ZipcodeID", profile.ZipcodeID);
 
                 int added = sql_cmnd.ExecuteNonQuery();
                 sqlCon.Close();
+                
                 if (added == 1)
                 {
                     return true;

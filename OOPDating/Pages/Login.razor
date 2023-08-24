@@ -8,34 +8,26 @@
 
 <h3>Login</h3>
 <br />
-<EditForm>
-    <input @bind="model.AccountName" class="form-control" placeholder="Account Name" />
-    <br />
-    <input @bind="model.Password" type="password" id="Password" class="form-control" placeholder="Password" />
-    <br />
-    <button @onclick="Authenticate" class="btn btn-primary">Login</button>
-</EditForm>
+<input @bind="account.AccountName" class="form-control" placeholder="Account Name" />
+<br />
+<input @bind="account.Password" type="password" id="Password" class="form-control" placeholder="Password" />
+<br />
+<button @onclick="Authenticate" class="btn btn-primary">Login</button>
 
-@code {
-    private class Model
-    {
-        public string? AccountName { get; set; }
-        public string? Password { get; set; }
-    }
-
-    Model model = new();
+@code {    
+    Account account = new();
 
     private async Task Authenticate()
     {
-        if(string.IsNullOrWhiteSpace(model.AccountName) || string.IsNullOrWhiteSpace(model.Password))
+        if(string.IsNullOrWhiteSpace(account.AccountName) || string.IsNullOrWhiteSpace(account.Password))
         {
             await js.InvokeVoidAsync("alert", "Please enter Account Name and Password");
             return;
         }
 
-        var userAccount = accountService.GetAccount(model.AccountName);
+        var userAccount = accountService.GetAccount(account.AccountName);
 
-        if(userAccount == null || userAccount.Password != model.Password)
+        if(userAccount == null || userAccount.Password != account.Password)
         {
             await js.InvokeVoidAsync("alert", "Invalid Account Name or Password");
             return;

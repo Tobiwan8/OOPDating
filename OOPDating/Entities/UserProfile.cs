@@ -9,6 +9,6 @@
         public string? Gender { get; set; }
         public string? ProfileText { get; set; } = null;
         public int AccountID { get; set; }
-        public string? ZipcodeID { get; set; }
+        public string? ZipcodeID { get; set; } = "2000";
     }
 }
