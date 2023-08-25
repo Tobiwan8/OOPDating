@@ -42,8 +42,8 @@
 @*LAV SØGEFUNKTION*@
 <p>Filter:</p>
 <div class="searchBar">
-    <label>Age:</label>
-    <select class="form-control" style="width:auto">
+    <label><b>Age:</b></label>
+    <select class="form-control" style="width:auto"> @*Lav et 2d array til at finde aldersgrupper *@
         <option value="">All</option>
         <option value=25>18-25</option>
         <option value=30>26-30</option>
@@ -56,14 +56,15 @@
         <option value=65>61-65</option>
         <option value=70>66-70</option>
     </select>
+    <label><b>Gender:</b></label>
     <label>All:</label>
     <input name="gender" type="radio" value="All" checked="checked" />
     <label>Male:</label>
-    <input name="gender" type="radio" value="Male" />
+    <input name="gender" type="radio" value="Male"/>
     <label>Female:</label>
     <input name="gender" type="radio" value="Female" />
     <br />
-    <label>Zipcode:</label>
+    <label><b>Zipcode:</b></label>
     <select class="form-control" style="width:auto">
         <option value="">All</option>
         @foreach (var item in zipcodes)
@@ -72,7 +73,8 @@
         }
     </select>
     <br />
-    <input class="form-control" style="width:"/>
+    <label>Search by name</label>
+    <input class="form-control" style="width:300px"/>
 </div>
 <br />
 <div class="profile-container">
