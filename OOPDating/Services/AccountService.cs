@@ -6,6 +6,13 @@ namespace OOPDating.Services
     public class AccountService : IAccountService
     {
         private IAccountRepository _repository;
+        public Account CurrentAccount { get; set; }
+
+        public AccountService()
+        {
+            CurrentAccount = new Account();
+        }
+
         public AccountService(IAccountRepository accountRepository) 
         {
             _repository = accountRepository;
@@ -26,6 +33,7 @@ namespace OOPDating.Services
         public Account GetAccount(string accountName)
         {
             Account FindDBAccount= _repository.GetAccount(accountName);
+            CurrentAccount = FindDBAccount;
             return FindDBAccount;
         }
 

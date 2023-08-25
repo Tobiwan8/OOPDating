@@ -1,7 +1,5 @@
 ﻿@page "/"
-@page "/{accountName}"
 @page "/home"
-@page "/home/{accountName}"
 
 <PageTitle>Welcome</PageTitle>
 
@@ -17,6 +15,5 @@
     </NotAuthorized>
 </AuthorizeView>
 
-@code{
-    [Parameter] public string? accountName { get; set; }
+@code{    
 }
