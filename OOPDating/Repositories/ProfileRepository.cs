@@ -179,5 +179,24 @@ namespace OOPDating.Repositories
                 return false;
             }
         }
+
+        public bool DeleteProfile(UserProfile profile)
+        {
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_DeleteProfile", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.UniqueIdentifier).Value = profile.ID;
+                int deleted = sql_cmnd.ExecuteNonQuery();
+                sqlCon.Close();
+                if (deleted == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }

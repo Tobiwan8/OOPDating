@@ -1,4 +1,6 @@
 ﻿@page "/profile"
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 @inject IAccountService accountService
 @inject IProfileService profileService
 @inject IZipcodeService zipcodeService
@@ -7,9 +9,6 @@
 
 <h3>Profile</h3>
 <br />
-@*<input @bind="account.ID" />
-<input @bind="account.AccountName"/>*@
-
 <input @bind="profile.FirstName" class="form-control"/>
 <br />
 <input @bind="profile.LastName" class="form-control" />
@@ -32,6 +31,9 @@
 </select>
 <br />
 <button @onclick="Edit" class="btn btn-primary">Edit</button>
+<br />
+<br />
+<button @onclick="DeleteAccount" class="btn btn-primary">Delete</button>
 
 @code {
     private Account account = new();
@@ -53,5 +55,23 @@
         profileService.UpdateProfile(profile);
         js.InvokeVoidAsync("alert", "Profile updated");
         StateHasChanged();
+    }
+
+    private async Task DeleteAccount()
+    {
+        bool confirmed = await js.InvokeAsync<bool>("confirm", "This will delete your profile and account. Continue?");
+
+        if (!confirmed)
+        {
+            return;
+        }
+        profileService.DeleteProfile(profile);
+        accountService.DeleteAccount(account);
+
+        await js.InvokeVoidAsync("alert", "Your account has been deleted!");
+        
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
     }
 }

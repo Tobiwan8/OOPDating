@@ -13,5 +13,7 @@ namespace OOPDating.Interfaces
         void UpdateProfile(UserProfile profile);
 
         void AddProfile(UserProfile profile, Account account);
+
+        void DeleteProfile(UserProfile profile);
     }
 }

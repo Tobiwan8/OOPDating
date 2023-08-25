@@ -11,6 +11,6 @@ namespace OOPDating.Interfaces
 
         void AddAccount(Account account);
 
-        void DeleteAccount(string accountName);
+        void DeleteAccount(Account account);
     }
 }

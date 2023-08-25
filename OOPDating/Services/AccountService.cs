@@ -19,9 +19,8 @@ namespace OOPDating.Services
             _repository.AddAccount(account);
         }
 
-        public void DeleteAccount(string accountName)
+        public void DeleteAccount(Account account)
         {
-            var account = _repository.GetAccount(accountName);
             _repository.DeleteAccount(account);
         }
 

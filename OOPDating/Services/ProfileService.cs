@@ -39,5 +39,10 @@ namespace OOPDating.Services
         {            
             _repository.UpdateProfile(profile);
         }
+
+        public void DeleteProfile(UserProfile profile)
+        {
+            _repository.DeleteProfile(profile);
+        }
     }
 }
