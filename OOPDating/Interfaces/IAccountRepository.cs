@@ -6,7 +6,6 @@ namespace OOPDating.Interfaces
     {
         bool AddAccount(Account account);
         bool DeleteAccount(Account account);
-        bool UpdateAccountPw(Account account);
         public Account GetAccount(string AccountName);
         List<Account> GetAccounts();
     }

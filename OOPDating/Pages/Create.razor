@@ -50,12 +50,6 @@
     private UserProfile profile = new();
     private List<ZipcodeCity> zipcodes = new();
 
-    private List<ZipcodeCity> GetZipcodesForDropdown()
-    {
-        zipcodes = zipcodeService.GetZipcodeCities();
-
-        return zipcodes;
-    }
 
     private async Task Authenticate()
     {
@@ -74,7 +68,7 @@
         }
 
         AccountNameIsValid = true;
-        GetZipcodesForDropdown();
+        zipcodes = zipcodeService.GetZipcodeCities();
         StateHasChanged();
     }
 

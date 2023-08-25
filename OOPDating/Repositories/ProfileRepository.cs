@@ -59,7 +59,14 @@ namespace OOPDating.Repositories
                         profile.LastName = (string)sdr["LastName"];
                         profile.DoB = (DateTime)sdr["DoB"];
                         profile.Gender = (string)sdr["Gender"];
-                        profile.ProfileText = (string)sdr["ProfileText"];
+                        if (sdr["ProfileText"] != DBNull.Value)
+                        {
+                            profile.ProfileText = (string)sdr["ProfileText"];
+                        }
+                        else
+                        {
+                            profile.ProfileText = null;
+                        }
                         profile.AccountID = (int)sdr["AccountID"];
                         profile.ZipcodeID = (string)sdr["ZipcodeID"];
                     }
@@ -88,7 +95,14 @@ namespace OOPDating.Repositories
                         profile.LastName = (string)sdr["LastName"];
                         profile.DoB = (DateTime)sdr["DoB"];
                         profile.Gender = (string)sdr["Gender"];
-                        profile.ProfileText = (string)sdr["ProfileText"];
+                        if (sdr["ProfileText"] != DBNull.Value)
+                        {
+                            profile.ProfileText = (string)sdr["ProfileText"];
+                        }
+                        else
+                        {
+                            profile.ProfileText = null;
+                        }
                         profile.AccountID = (int)sdr["AccountID"];
                         profile.ZipcodeID = (string)sdr["ZipcodeID"];
                     }
@@ -145,7 +159,14 @@ namespace OOPDating.Repositories
                 sql_cmnd.Parameters.AddWithValue("@LastName", SqlDbType.NVarChar).Value = profile.LastName;
                 sql_cmnd.Parameters.AddWithValue("@DoB", SqlDbType.Date).Value = formatedDoB;
                 sql_cmnd.Parameters.AddWithValue("@Gender", SqlDbType.NVarChar).Value = profile.Gender;
-                sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
+                if(profile.ProfileText != null)
+                {
+                    sql_cmnd.Parameters.AddWithValue("@ProfileText", SqlDbType.NVarChar).Value = profile.ProfileText;
+                }
+                else
+                {
+                    sql_cmnd.Parameters.AddWithValue("@ProfileText", DBNull.Value);
+                }
                 sql_cmnd.Parameters.AddWithValue("@AccountID", SqlDbType.Int).Value = profile.AccountID;
                 sql_cmnd.Parameters.AddWithValue("@ZipcodeID", SqlDbType.NChar).Value = profile.ZipcodeID;
 

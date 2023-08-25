@@ -1,12 +1,14 @@
-﻿@page "/Profile"
+﻿@page "/profile"
 @inject IAccountService accountService
 @inject IProfileService profileService
 @inject IZipcodeService zipcodeService
+@inject IJSRuntime js
 @attribute [Authorize]
 
 <h3>Profile</h3>
 <br />
-<input @bind="accountService.CurrentAccount.AccountName"/>
+@*<input @bind="account.ID" />
+<input @bind="account.AccountName"/>*@
 
 <input @bind="profile.FirstName" class="form-control"/>
 <br />
@@ -19,7 +21,7 @@
 <label>Female:</label>
 <input name="gender" type="radio" value="Female" checked="@(profile.Gender == "Female")" @onclick="@(()=>profile.Gender = "Female")" />
 <br />
-<textarea @bind="profile.ProfileText" class="form-control">@profile.ProfileText</textarea>
+<textarea @bind="profile.ProfileText" class="form-control"></textarea>
 <br />
 <label>Zipcode:</label>
 <select @bind="profile.ZipcodeID" class="form-control">
@@ -29,10 +31,27 @@
     }
 </select>
 <br />
-<button class="btn btn-primary">Edit</button>
+<button @onclick="Edit" class="btn btn-primary">Edit</button>
 
 @code {
-    //private Account account = new();
+    private Account account = new();
     public UserProfile profile = new();
     private List<ZipcodeCity> zipcodes = new();
+
+    protected override void OnInitialized()
+    {
+        account.ID = CurrentLoginAccount.ID;
+        account.AccountName = CurrentLoginAccount.AccountName;
+        account.Password = CurrentLoginAccount.Password;
+
+        profile = profileService.GetProfileByAccountID(account);
+        zipcodes = zipcodeService.GetZipcodeCities();
+    }
+
+    private void Edit()
+    {
+        profileService.UpdateProfile(profile);
+        js.InvokeVoidAsync("alert", "Profile updated");
+        StateHasChanged();
+    }
 }

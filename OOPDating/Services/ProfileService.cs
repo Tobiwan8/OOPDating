@@ -36,9 +36,8 @@ namespace OOPDating.Services
         }
 
         public void UpdateProfile(UserProfile profile)
-        {
-            var dbProfile = _repository.GetProfile(profile);
-            _repository.UpdateProfile(dbProfile);
+        {            
+            _repository.UpdateProfile(profile);
         }
     }
 }

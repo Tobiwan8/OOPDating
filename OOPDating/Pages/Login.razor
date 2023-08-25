@@ -14,7 +14,7 @@
 <br />
 <button @onclick="Authenticate" class="btn btn-primary">Login</button>
 
-@code {    
+@code {
     Account account = new();
 
     private async Task Authenticate()
@@ -34,9 +34,9 @@
         }
 
         var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+        await customAuthStateProvider.UpdateAuthenticationState(new Account
         {
-            UserName = userAccount.AccountName
+            AccountName = userAccount.AccountName
         });
 
         navManager.NavigateTo($"/", true);

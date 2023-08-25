@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
+using OOPDating.Entities;
 
 namespace OOPDating.Authentication
 {
@@ -17,15 +18,15 @@ namespace OOPDating.Authentication
         {
             try
             {
-                var UserSessionStorageResult = await _sessionStorage.GetAsync<UserSession>("UserSession");
-                var UserSession = UserSessionStorageResult.Success ? UserSessionStorageResult.Value : null;
-                if (UserSession == null)
+                var UserSessionStorageResult = await _sessionStorage.GetAsync<Account>("Account");
+                var Account = UserSessionStorageResult.Success ? UserSessionStorageResult.Value : null;
+                if (Account == null)
                 {
                     return await Task.FromResult(new AuthenticationState(_anonymous));
                 }
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, UserSession.UserName)
+                    new Claim(ClaimTypes.Name, Account.AccountName)
                 }, "CustomAuth"));
                 return await Task.FromResult(new AuthenticationState(claimsPrincipal));
             }
@@ -35,21 +36,21 @@ namespace OOPDating.Authentication
             }
         }
 
-        public async Task UpdateAuthenticationState(UserSession userSession)
+        public async Task UpdateAuthenticationState(Account account)
         {
             ClaimsPrincipal claimsPrincipal;
 
-            if(userSession != null)
+            if(account != null)
             {
-                await _sessionStorage.SetAsync("UserSession", userSession);
+                await _sessionStorage.SetAsync("Account", account);
                 claimsPrincipal = new(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userSession.UserName)
+                    new Claim(ClaimTypes.Name, account.AccountName)
                 }));
             }
             else
             {
-                await _sessionStorage.DeleteAsync("UserSession");
+                await _sessionStorage.DeleteAsync("Account");
                 claimsPrincipal = _anonymous;
             }
 

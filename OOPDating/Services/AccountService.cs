@@ -1,17 +1,12 @@
 ﻿using OOPDating.Entities;
 using OOPDating.Interfaces;
+using OOPDating.Global;
 
 namespace OOPDating.Services
 {
     public class AccountService : IAccountService
     {
         private IAccountRepository _repository;
-        public Account CurrentAccount { get; set; }
-
-        public AccountService()
-        {
-            CurrentAccount = new Account();
-        }
 
         public AccountService(IAccountRepository accountRepository) 
         {
@@ -33,7 +28,9 @@ namespace OOPDating.Services
         public Account GetAccount(string accountName)
         {
             Account FindDBAccount= _repository.GetAccount(accountName);
-            CurrentAccount = FindDBAccount;
+            CurrentLoginAccount.ID = FindDBAccount.ID;
+            CurrentLoginAccount.AccountName = FindDBAccount.AccountName;
+            CurrentLoginAccount.Password = FindDBAccount.Password;
             return FindDBAccount;
         }
 
@@ -41,16 +38,6 @@ namespace OOPDating.Services
         {
             var accounts = _repository.GetAccounts();
             return accounts;
-        }
-
-        public void UpdateAccount(Account account)
-        {
-            if(account.AccountName != null)
-            {
-                var dbAccount = _repository.GetAccount(account.AccountName);
-                dbAccount.Password = account.Password;
-                _repository.UpdateAccountPw(dbAccount);
-            }
         }
     }
 }
