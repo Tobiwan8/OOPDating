@@ -4,6 +4,12 @@
 @attribute [Authorize]
 
 <style>
+    .searchBar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
     .profile-container {
         display: flex;
         flex-wrap: wrap;
@@ -15,7 +21,7 @@
         margin: 10px;
         padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 25px;
+        border-radius: 15px;
         display: inline-block;
         vertical-align: top;
         color: white;
@@ -31,7 +37,43 @@
 </style>
 
 <h3>Match</h3>
-<p>Happy hunting! Like whoever your - you know - desires. If people you've liked also likes you, you can talk to them in chat :D</p>
+<p>Happy hunting! Like whoever your heart desires. If people you've liked also likes you, you can talk to them in chat :D</p>
+<br />
+@*LAV SØGEFUNKTION*@
+<p>Filter:</p>
+<div class="searchBar">
+    <label>Age:</label>
+    <select class="form-control" style="width:auto">
+        <option value="">All</option>
+        <option value=25>18-25</option>
+        <option value=30>26-30</option>
+        <option value=35>31-35</option>
+        <option value=40>36-40</option>
+        <option value=45>41-45</option>
+        <option value=50>46-50</option>
+        <option value=55>51-55</option>
+        <option value=60>56-60</option>
+        <option value=65>61-65</option>
+        <option value=70>66-70</option>
+    </select>
+    <label>All:</label>
+    <input name="gender" type="radio" value="All" checked="checked" />
+    <label>Male:</label>
+    <input name="gender" type="radio" value="Male" />
+    <label>Female:</label>
+    <input name="gender" type="radio" value="Female" />
+    <br />
+    <label>Zipcode:</label>
+    <select class="form-control" style="width:auto">
+        <option value="">All</option>
+        @foreach (var item in zipcodes)
+        {
+            <option value="@item.Zipcode">@item.Zipcode</option>
+        }
+    </select>
+    <br />
+    <input class="form-control" style="width:"/>
+</div>
 <br />
 <div class="profile-container">
     @foreach (var profile in userProfiles)
@@ -41,7 +83,7 @@
             <p>Age: @CalculateAge(profile.DoB)<br /></p>
             <p>Region: @GetRegion(profile.ZipcodeID)<br /></p>
             <p>Gender: @profile.Gender<br /></p>
-            <button >
+            <button @onclick="HasBeenLiked" class="btn btn-primary">
                 <span class="oi oi-heart" aria-hidden="true"></span>
             </button>
         </div>
@@ -50,10 +92,12 @@
 
 @code {
     private List<UserProfile> userProfiles = new();
+    private List<ZipcodeCity> zipcodes = new();
 
     protected override void OnInitialized()
     {
         userProfiles = profileService.GetProfiles();
+        zipcodes = zipcodeService.GetZipcodeCities();
     }
 
     private string GetRegion(string? zipcode)
@@ -81,4 +125,10 @@
 
         return age.ToString();
     }
+
+    private void HasBeenLiked()
+    {
+
+    }
+
 }
