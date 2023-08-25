@@ -123,22 +123,28 @@ namespace OOPDating.Repositories
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
                 {
-
                     while (sdr.Read())
                     {
-                        profiles.Add(new UserProfile
+                        UserProfile userProfile = new()
                         {
                             ID = (int)sdr["ID"],
                             FirstName = (string)sdr["FirstName"],
                             LastName = (string)sdr["LastName"],
                             DoB = (DateTime)sdr["DoB"],
                             Gender = (string)sdr["Gender"],
-                            ProfileText = (string)sdr["ProfileText"],
                             AccountID = (int)sdr["AccountID"],
                             ZipcodeID = (string)sdr["ZipcodeID"]
-                        });
+                        };
+
+                        if (!sdr.IsDBNull(sdr.GetOrdinal("ProfileText")))
+                        {
+                            userProfile.ProfileText = (string)sdr["ProfileText"];
+                        }
+
+                        profiles.Add(userProfile);
                     }
                 }
+
                 sqlCon.Close();
                 return profiles;
             }
