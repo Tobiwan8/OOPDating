@@ -44,5 +44,10 @@ namespace OOPDating.Services
         {
             _repository.DeleteProfile(profile);
         }
+
+        public List<UserProfile> GetProfilesBySearch(ProfileSearch search)
+        {
+            return _repository.GetProfilesBySearch(search);
+        }
     }
 }

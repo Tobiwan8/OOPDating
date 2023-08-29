@@ -204,5 +204,46 @@ namespace OOPDating.Repositories
                 return false;
             }
         }
+
+        public List<UserProfile> GetProfilesBySearch(ProfileSearch search)
+        {
+            List<UserProfile> profiles = new();
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+
+                using (SqlCommand sql_cmnd = new SqlCommand("usp_SearchProfiles", sqlCon))
+                {
+                    sql_cmnd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sql_cmnd.Parameters.AddWithValue("@Name", search.Name);
+                    sql_cmnd.Parameters.AddWithValue("@AgeMin", search.AgeMin);
+                    sql_cmnd.Parameters.AddWithValue("@AgeMax", search.AgeMax);
+                    sql_cmnd.Parameters.AddWithValue("@Gender", search.Gender);
+                    sql_cmnd.Parameters.AddWithValue("@Zipcode", search.Zipcode);
+
+                    using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            UserProfile userProfile = new()
+                            {
+                                ID = (int)sdr["ID"],
+                                FirstName = (string)sdr["FirstName"],
+                                LastName = (string)sdr["LastName"],
+                                DoB = (DateTime)sdr["DoB"],
+                                Gender = (string)sdr["Gender"],
+                                AccountID = (int)sdr["AccountID"],
+                                ZipcodeID = (string)sdr["ZipcodeID"]
+                            };
+                            profiles.Add(userProfile);
+                        }
+                    }
+                }
+            }
+
+            return profiles;
+        }
     }
 }

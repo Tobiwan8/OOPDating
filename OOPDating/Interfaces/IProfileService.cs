@@ -15,5 +15,6 @@ namespace OOPDating.Interfaces
         void AddProfile(UserProfile profile, Account account);
 
         void DeleteProfile(UserProfile profile);
+        List<UserProfile> GetProfilesBySearch(ProfileSearch search);
     }
 }

@@ -10,5 +10,6 @@ namespace OOPDating.Interfaces
         public UserProfile GetProfileByAccountID(Account account);
         List<UserProfile> GetProfiles();
         bool DeleteProfile(UserProfile profile);
+        List<UserProfile> GetProfilesBySearch(ProfileSearch search);
     }
 }
