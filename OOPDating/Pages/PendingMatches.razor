@@ -87,7 +87,7 @@
     private void HasBeenLiked(UserProfile likedProfile)
     {
         currentAccountID.ID = CurrentLoginAccount.ID;
-        profileService.LikeProfile(profileService.GetProfileByAccountID(currentAccountID), likedProfile);
+        profileService.LikeOrMatchProfile(profileService.GetProfileByAccountID(currentAccountID), likedProfile);
     }
 
     private void DeclineLike(UserProfile unlikedProfile)
