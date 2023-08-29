@@ -39,23 +39,22 @@
 <h3>Match</h3>
 <p>Happy hunting! Like whoever your heart desires. If people you've liked also likes you, you can talk to them in chat :D</p>
 <br />
-@*LAV SØGEFUNKTION*@
 <p>Filter:</p>
 <div class="searchBar">
-    <label><b>min age:</b></label>
-    <input @bind="profileSearch.AgeMin" class="form-control" style="width:50px" />
-    <label><b>Max age:</b></label>
-    <input @bind="profileSearch.AgeMax" class="form-control" style="width:50px" />
+    <label for="minAge"><b>min age:</b></label>
+    <input @bind="profileSearch.AgeMin" id="minAge" class="form-control" style="width:50px" />
+    <label for="maxAge"><b>Max age:</b></label>
+    <input @bind="profileSearch.AgeMax" id="maxAge" class="form-control" style="width:50px" />
     <label><b>Gender:</b></label>
-    <label>All:</label>
-    <input name="gender" type="radio" value="All" checked="@(profileSearch.Gender == null)" @onclick="@(()=>profileSearch.Gender = null)" />
-    <label>Male:</label>
-    <input name="gender" type="radio" value="Male" checked="@(profileSearch.Gender == "Male")" @onclick="@(()=>profileSearch.Gender = "Male")" />
-    <label>Female:</label>
-    <input name="gender" type="radio" value="Female" checked="@(profileSearch.Gender == "Female")" @onclick="@(()=>profileSearch.Gender = "Female")" />
+    <label for="allG">All:</label>
+    <input name="gender" id="allG" type="radio" value="All" checked="@(profileSearch.Gender == null)" @onclick="@(()=>profileSearch.Gender = null)" />
+    <label for="maleG">Male:</label>
+    <input name="gender" id="maleG" type="radio" value="Male" checked="@(profileSearch.Gender == "Male")" @onclick="@(()=>profileSearch.Gender = "Male")" />
+    <label for="femaleG">Female:</label>
+    <input name="gender" id="femaleG" type="radio" value="Female" checked="@(profileSearch.Gender == "Female")" @onclick="@(()=>profileSearch.Gender = "Female")" />
     <br />
-    <label><b>Zipcode:</b></label>
-    <select @bind="profileSearch.Zipcode" class="form-control" style="width:auto">
+    <label for="zip"><b>Zipcode:</b></label>
+    <select @bind="profileSearch.Zipcode" id="zip" class="form-control" style="width:auto">
         <option value="">All</option>
         @foreach (var item in zipcodes)
         {
@@ -63,8 +62,8 @@
         }
     </select>
     <br />
-    <label>Search by name</label>
-    <input @bind="profileSearch.Name" class="form-control" style="width:300px"/>
+    <label for="namesearch">Search by name</label>
+    <input @bind="profileSearch.Name" id="namesearch" class="form-control" style="width:300px"/>
     <button @onclick="Filter" class="btn btn-primary">Filter</button>
     <button @onclick="Clear" class="btn btn-primary" style="background-color: rebeccapurple">Clear</button>
 </div>
@@ -72,12 +71,16 @@
 <div class="profile-container">
     @foreach (var profile in userProfiles)
     {
+        @if(profile.AccountID == CurrentLoginAccount.ID)
+        {
+            continue;
+        }
         <div class="profile-card" style="@(profile.Gender == "Female" ? "background-color: red;" : "background-color: blue;")">
             <p>@profile.FirstName @profile.LastName<br /></p>
             <p>Age: @CalculateAge(profile.DoB)<br /></p>
             <p>Region: @GetRegion(profile.ZipcodeID)<br /></p>
             <p>Gender: @profile.Gender<br /></p>
-            <button @onclick="HasBeenLiked" class="btn btn-primary">
+            <button @onclick="@(() => HasBeenLiked(profile))" class="btn btn-primary" style="background-color: lightpink">
                 <span class="oi oi-heart" aria-hidden="true"></span>
             </button>
         </div>
@@ -88,6 +91,7 @@
     private List<UserProfile> userProfiles = new();
     private List<ZipcodeCity> zipcodes = new();
     private ProfileSearch profileSearch = new();
+    private Account currentAccountID = new();
 
     protected override void OnInitialized()
     {
@@ -121,9 +125,10 @@
         return age.ToString();
     }
 
-    private void HasBeenLiked()
+    private void HasBeenLiked(UserProfile likedProfile)
     {
-
+        currentAccountID.ID = CurrentLoginAccount.ID;
+        profileService.LikeProfile(profileService.GetProfileByAccountID(currentAccountID), likedProfile);
     }
 
     private void Filter()

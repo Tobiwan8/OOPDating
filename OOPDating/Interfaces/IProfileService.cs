@@ -16,5 +16,7 @@ namespace OOPDating.Interfaces
 
         void DeleteProfile(UserProfile profile);
         List<UserProfile> GetProfilesBySearch(ProfileSearch search);
+
+        void LikeOrMatchProfile(UserProfile senderProfile, UserProfile receiverProfile);
     }
 }

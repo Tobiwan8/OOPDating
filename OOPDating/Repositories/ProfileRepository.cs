@@ -83,7 +83,7 @@ namespace OOPDating.Repositories
             using (var sqlCon = new SqlConnection(SqlconString))
             {
                 sqlCon.Open();
-                SqlCommand sql_cmnd = new SqlCommand("usp_GetProfile", sqlCon);
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetProfileByAccountID", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@ID", SqlDbType.Int).Value = account.ID;
                 using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
@@ -244,6 +244,26 @@ namespace OOPDating.Repositories
             }
 
             return profiles;
+        }
+
+        public bool LikeOrMatchProfile(UserProfile senderProfile, UserProfile receiverProfile)
+        {
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_LikeOrMatch", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@SenderID", SqlDbType.UniqueIdentifier).Value = senderProfile.ID;
+                sql_cmnd.Parameters.AddWithValue("@ReceiverID", SqlDbType.UniqueIdentifier).Value = receiverProfile.ID;
+                int liked = sql_cmnd.ExecuteNonQuery();
+                sqlCon.Close();
+                if (liked == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }
