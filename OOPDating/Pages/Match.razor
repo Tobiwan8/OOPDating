@@ -1,4 +1,5 @@
 ﻿@page "/Match"
+@inject IJSRuntime js
 @inject IProfileService profileService
 @inject IZipcodeService zipcodeService
 @attribute [Authorize]
@@ -129,6 +130,7 @@
     {
         currentAccountID.ID = CurrentLoginAccount.ID;
         profileService.LikeOrMatchProfile(profileService.GetProfileByAccountID(currentAccountID), likedProfile);
+        js.InvokeVoidAsync("alert", "Naughty! I see why you did that ;)");
     }
 
     private void Filter()

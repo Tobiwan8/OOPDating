@@ -54,5 +54,10 @@ namespace OOPDating.Services
         {
             _repository.LikeOrMatchProfile(senderProfile, receiverProfile);
         }
+
+        public List<UserProfile> GetProfilesThatLikeYou(UserProfile receiverProfile)
+        {
+            return _repository.GetProfilesThatLikedYou(receiverProfile);
+        }
     }
 }

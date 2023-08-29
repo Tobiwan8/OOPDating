@@ -265,5 +265,44 @@ namespace OOPDating.Repositories
                 return false;
             }
         }
+
+        public List<UserProfile> GetProfilesThatLikedYou(UserProfile receiverProfile)
+        {
+            List<UserProfile> profiles = new();
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetProfilesWhoLikedYou", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@ReceiverID", SqlDbType.UniqueIdentifier).Value = receiverProfile.ID;
+                using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        UserProfile userProfile = new()
+                        {
+                            ID = (int)sdr["ID"],
+                            FirstName = (string)sdr["FirstName"],
+                            LastName = (string)sdr["LastName"],
+                            DoB = (DateTime)sdr["DoB"],
+                            Gender = (string)sdr["Gender"],
+                            AccountID = (int)sdr["AccountID"],
+                            ZipcodeID = (string)sdr["ZipcodeID"]
+                        };
+
+                        if (!sdr.IsDBNull(sdr.GetOrdinal("ProfileText")))
+                        {
+                            userProfile.ProfileText = (string)sdr["ProfileText"];
+                        }
+
+                        profiles.Add(userProfile);
+                    }
+                }
+
+                sqlCon.Close();
+                return profiles;
+            }
+        }
     }
 }

@@ -18,5 +18,7 @@ namespace OOPDating.Interfaces
         List<UserProfile> GetProfilesBySearch(ProfileSearch search);
 
         void LikeOrMatchProfile(UserProfile senderProfile, UserProfile receiverProfile);
+
+        List<UserProfile> GetProfilesThatLikeYou(UserProfile receiverProfile);
     }
 }
