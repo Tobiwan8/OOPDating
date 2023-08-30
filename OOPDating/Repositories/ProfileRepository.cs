@@ -409,5 +409,37 @@ namespace OOPDating.Repositories
                 return false;
             }
         }
+
+        public List<Communication> GetSpecificChat(UserProfile senderProfile, UserProfile receiverProfile)
+        {
+            List<Communication> coms = new();
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetSpecificChat", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@currentID", senderProfile.ID);
+                sql_cmnd.Parameters.AddWithValue("@receiverID", receiverProfile.ID);
+                using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        Communication com = new()
+                        {
+                            ID = (int)sdr["ID"],
+                            SenderID = (int)sdr["SenderID"],
+                            ReceiverID = (int)sdr["ReceiverID"],
+                            Message = (string)sdr["ChatMessage"]
+                        };
+
+                        coms.Add(com);
+                    }
+                }
+
+                sqlCon.Close();
+                return coms;
+            }
+        }
     }
 }

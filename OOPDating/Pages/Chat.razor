@@ -49,14 +49,23 @@
 </div>
 @if (IsMessaging)
 {
+    <p>CHAT: Blues are you's and Reds are get's </p>
     <div>
         @foreach(var messages in chat)
         {
-            <p>@message.Message</p>
+            if(messages.SenderID == currentProfile.ID)
+            {
+                <p style="color:blue">@messages.Message</p>
+
+                <br />
+                continue;
+            }
+            <p style="color:red">@messages.Message</p><br />
         }
     </div>
     <div>
-        <input @bind="message.Message" class="form-control" placeholder="Enter Message"/>
+        <br />
+        <input @bind="message.Message" class="form-control" placeholder="Enter Message"/> <br />
         <button @onclick="SendMessage" class="btn btn-primary">Send</button>
     </div>
 }
@@ -109,10 +118,10 @@
 
     private void MessageToUser(UserProfile chattingProfile)
     {
-        chattingProfile = chatProfile;
+        chatProfile = chattingProfile;
         message.ReceiverID = chatProfile.ID;
         IsMessaging = true;
-        profileService.GetSpecificChat(currentProfile, chatProfile);
+        GetChat();
         StateHasChanged();
     }
 
@@ -124,7 +133,7 @@
 
     private void GetChat()
     {
-
+        chat = profileService.GetSpecificChat(currentProfile, chatProfile);
         StateHasChanged();
     }
 }

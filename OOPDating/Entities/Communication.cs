@@ -1,6 +1,8 @@
-﻿namespace OOPDating.Entities
+﻿using OOPDating.Interfaces;
+
+namespace OOPDating.Entities
 {
-    public class Chat
+    public class Communication
     {
         public int ID { get; set; }
         public int SenderID { get; set; }

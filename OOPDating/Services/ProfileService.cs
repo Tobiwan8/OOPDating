@@ -79,5 +79,10 @@ namespace OOPDating.Services
         {
             _repository.SendMessageToUser(message);
         }
+
+        public List<Communication> GetSpecificChat(UserProfile senderProfile, UserProfile ReceiverProfile)
+        {
+            return _repository.GetSpecificChat(senderProfile, ReceiverProfile);
+        }
     }
 }
