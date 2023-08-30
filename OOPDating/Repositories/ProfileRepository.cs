@@ -386,5 +386,28 @@ namespace OOPDating.Repositories
                 return profiles;
             }
         }
+
+        public bool SendMessageToUser(Communication message)
+        {
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_SendMessage", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@CurrentID", message.SenderID);
+                sql_cmnd.Parameters.AddWithValue("@ReceiverID", message.ReceiverID);
+                sql_cmnd.Parameters.AddWithValue("@Message", message.Message);
+
+                int added = sql_cmnd.ExecuteNonQuery();
+                sqlCon.Close();
+
+                if (added == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }

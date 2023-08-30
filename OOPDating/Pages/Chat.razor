@@ -41,7 +41,7 @@
             <p>Age: @CalculateAge(profile.DoB)<br /></p>
             <p>Region: @GetRegion(profile.ZipcodeID)<br /></p>
             <p>Gender: @profile.Gender<br /></p>
-            <button @onclick="@(() => Message(profile))" class="btn btn-primary">
+            <button @onclick="@(() => MessageToUser(profile))" class="btn btn-primary">
                 <span class="oi oi-envelope-closed" aria-hidden="true"></span>
             </button>
         </div>
@@ -49,7 +49,16 @@
 </div>
 @if (IsMessaging)
 {
-    <p>Ayo</p>
+    <div>
+        @foreach(var messages in chat)
+        {
+            <p>@message.Message</p>
+        }
+    </div>
+    <div>
+        <input @bind="message.Message" class="form-control" placeholder="Enter Message"/>
+        <button @onclick="SendMessage" class="btn btn-primary">Send</button>
+    </div>
 }
 
 @code {
@@ -60,11 +69,14 @@
     private List<ZipcodeCity> zipcodes = new();
     private UserProfile currentProfile = new();
     private UserProfile chatProfile = new();
+    private List<Communication> chat = new();
+    private Communication message = new();
 
     protected override void OnInitialized()
     {
         currentAccountID.ID = CurrentLoginAccount.ID;
         currentProfile = profileService.GetProfileByAccountID(currentAccountID);
+        message.SenderID = currentProfile.ID;
         userProfiles = profileService.GetMatchedProfiles(currentProfile);
         zipcodes = zipcodeService.GetZipcodeCities();
     }
@@ -95,10 +107,24 @@
         return age.ToString();
     }
 
-    private void Message(UserProfile chattingProfile)
+    private void MessageToUser(UserProfile chattingProfile)
     {
         chattingProfile = chatProfile;
+        message.ReceiverID = chatProfile.ID;
         IsMessaging = true;
+        profileService.GetSpecificChat(currentProfile, chatProfile);
+        StateHasChanged();
+    }
+
+    private void SendMessage()
+    {
+        profileService.SendMessageToUser(message);
+        GetChat();
+    }
+
+    private void GetChat()
+    {
+
         StateHasChanged();
     }
 }

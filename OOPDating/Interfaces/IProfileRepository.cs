@@ -16,5 +16,7 @@ namespace OOPDating.Interfaces
         List<int> GetLikedProfiles(UserProfile senderProfile);
         bool DislikeProfile(UserProfile senderProfile, UserProfile receiverProfile);
         List<UserProfile> GetMatchedProfiles(UserProfile senderProfile);
+        bool SendMessageToUser(Communication message);
+        List<Communication> GetSpecificChat(UserProfile senderProfile, UserProfile receiverProfile);
     }
 }

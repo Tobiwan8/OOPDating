@@ -26,5 +26,9 @@ namespace OOPDating.Interfaces
         void DislikeProfile(UserProfile senderProfile, UserProfile receiverProfile);
 
         List<UserProfile> GetMatchedProfiles(UserProfile senderProfile);
+
+        void SendMessageToUser(Communication message);
+
+        List<Communication> GetSpecificChat(UserProfile senderProfile, UserProfile ReceiverProfile);
     }
 }

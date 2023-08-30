@@ -74,5 +74,10 @@ namespace OOPDating.Services
         {
             return _repository.GetMatchedProfiles(senderProfile);
         }
+
+        public void SendMessageToUser(Communication message)
+        {
+            _repository.SendMessageToUser(message);
+        }
     }
 }
