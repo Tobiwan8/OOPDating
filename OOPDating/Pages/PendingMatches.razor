@@ -31,6 +31,8 @@
     }
 </style>
 
+<h3>Profiles that liked you!</h3>
+
 <div class="profile-container">
     @foreach (var profile in userProfiles)
     {
@@ -43,22 +45,22 @@
                 <span class="oi oi-heart" aria-hidden="true"></span>
             </button>
             <button @onclick="@(() => DeclineLike(profile))" class="btn btn-primary" style="background-color: red">
-                <span class="oi oi-delete" aria-hidden="true"></span>
+                <span class="oi oi-thumb-down" aria-hidden="true"></span>
             </button>
         </div>
     }
 </div>
 
-<h3>PendingMatches</h3>
-
 @code {
     private List<UserProfile> userProfiles = new();
     private Account currentAccountID = new();
     private List<ZipcodeCity> zipcodes = new();
+    private UserProfile currentProfile = new();
 
     protected override void OnInitialized()
     {
         currentAccountID.ID = CurrentLoginAccount.ID;
+        currentProfile = profileService.GetProfileByAccountID(currentAccountID);
         userProfiles = profileService.GetProfilesThatLikeYou(profileService.GetProfileByAccountID(currentAccountID));
         zipcodes = zipcodeService.GetZipcodeCities();
     }
@@ -97,6 +99,8 @@
 
     private void DeclineLike(UserProfile unlikedProfile)
     {
-        
+        profileService.DislikeProfile(currentProfile, unlikedProfile);
+        js.InvokeVoidAsync("alert", "Well, if it aint you, it aint you");
+        StateHasChanged();
     }
 }

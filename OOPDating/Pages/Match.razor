@@ -72,7 +72,7 @@
 <div class="profile-container">
     @foreach (var profile in userProfiles)
     {
-        @if(profile.AccountID == CurrentLoginAccount.ID)
+        @if(profile.AccountID == CurrentLoginAccount.ID || likedProfiles.Contains(profile.ID))
         {
             continue;
         }
@@ -93,9 +93,14 @@
     private List<ZipcodeCity> zipcodes = new();
     private ProfileSearch profileSearch = new();
     private Account currentAccountID = new();
+    private UserProfile currentProfile = new();
+    private List<int> likedProfiles = new();
 
     protected override void OnInitialized()
     {
+        currentAccountID.ID = CurrentLoginAccount.ID;
+        currentProfile = profileService.GetProfileByAccountID(currentAccountID);
+        likedProfiles = profileService.GetLikedProfiles(currentProfile);
         Filter();
         zipcodes = zipcodeService.GetZipcodeCities();
     }
@@ -128,9 +133,9 @@
 
     private void HasBeenLiked(UserProfile likedProfile)
     {
-        currentAccountID.ID = CurrentLoginAccount.ID;
-        profileService.LikeOrMatchProfile(profileService.GetProfileByAccountID(currentAccountID), likedProfile);
+        profileService.LikeOrMatchProfile(currentProfile, likedProfile);
         js.InvokeVoidAsync("alert", "Naughty! I see why you did that ;)");
+        Filter();
     }
 
     private void Filter()

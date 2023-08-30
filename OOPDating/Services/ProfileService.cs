@@ -59,5 +59,20 @@ namespace OOPDating.Services
         {
             return _repository.GetProfilesThatLikedYou(receiverProfile);
         }
+
+        public List<int> GetLikedProfiles(UserProfile senderProfile)
+        {
+            return _repository.GetLikedProfiles(senderProfile);
+        }
+
+        public void DislikeProfile(UserProfile senderProfile, UserProfile receiverProfile)
+        {
+            _repository.DislikeProfile(senderProfile, receiverProfile);
+        }
+
+        public List<UserProfile> GetMatchedProfiles(UserProfile senderProfile)
+        {
+            return _repository.GetMatchedProfiles(senderProfile);
+        }
     }
 }

@@ -20,5 +20,11 @@ namespace OOPDating.Interfaces
         void LikeOrMatchProfile(UserProfile senderProfile, UserProfile receiverProfile);
 
         List<UserProfile> GetProfilesThatLikeYou(UserProfile receiverProfile);
+
+        List<int> GetLikedProfiles(UserProfile senderProfile);
+
+        void DislikeProfile(UserProfile senderProfile, UserProfile receiverProfile);
+
+        List<UserProfile> GetMatchedProfiles(UserProfile senderProfile);
     }
 }

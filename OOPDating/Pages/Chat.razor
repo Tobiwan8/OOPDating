@@ -1,8 +1,104 @@
 ﻿@page "/Chat"
+@inject IJSRuntime js
+@inject IProfileService profileService
+@inject IZipcodeService zipcodeService
 @attribute [Authorize]
+
+<style>
+    .profile-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .profile-card {
+        width: calc(20% - 20px);
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        display: inline-block;
+        vertical-align: top;
+        color: white;
+    }
+
+    .female {
+        background-color: #E47474;
+    }
+
+    .male {
+        background-color: #03A7F1;
+    }
+</style>
 
 <h3>Chat</h3>
 
-@code {
+<div class="profile-container">
+    @foreach (var profile in userProfiles)
+    {
+        <div class="profile-card" style="@(profile.Gender == "Female" ? "background-color: red;" : "background-color: blue;")">
+            <p>@profile.FirstName @profile.LastName<br /></p>
+            <p>Age: @CalculateAge(profile.DoB)<br /></p>
+            <p>Region: @GetRegion(profile.ZipcodeID)<br /></p>
+            <p>Gender: @profile.Gender<br /></p>
+            <button @onclick="@(() => Message(profile))" class="btn btn-primary">
+                <span class="oi oi-envelope-closed" aria-hidden="true"></span>
+            </button>
+        </div>
+    }
+</div>
+@if (IsMessaging)
+{
+    <p>Ayo</p>
+}
 
+@code {
+    private bool IsMessaging;
+
+    private List<UserProfile> userProfiles = new();
+    private Account currentAccountID = new();
+    private List<ZipcodeCity> zipcodes = new();
+    private UserProfile currentProfile = new();
+    private UserProfile chatProfile = new();
+
+    protected override void OnInitialized()
+    {
+        currentAccountID.ID = CurrentLoginAccount.ID;
+        currentProfile = profileService.GetProfileByAccountID(currentAccountID);
+        userProfiles = profileService.GetMatchedProfiles(currentProfile);
+        zipcodes = zipcodeService.GetZipcodeCities();
+    }
+
+    private string GetRegion(string? zipcode)
+    {
+        if (zipcode != null)
+        {
+            ZipcodeCity city = zipcodeService.GetZipcodeCity(zipcode);
+            if (city.City != null)
+            {
+                return city.City;
+            }
+        }
+        return string.Empty;
+    }
+
+    private string CalculateAge(DateTime dateOfBirth)
+    {
+        DateTime currentDate = DateTime.Now;
+        int age = currentDate.Year - dateOfBirth.Year;
+
+        if (currentDate.Month < dateOfBirth.Month || (currentDate.Month == dateOfBirth.Month && currentDate.Day < dateOfBirth.Day))
+        {
+            age--;
+        }
+
+        return age.ToString();
+    }
+
+    private void Message(UserProfile chattingProfile)
+    {
+        chattingProfile = chatProfile;
+        IsMessaging = true;
+        StateHasChanged();
+    }
 }

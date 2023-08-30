@@ -304,5 +304,87 @@ namespace OOPDating.Repositories
                 return profiles;
             }
         }
+
+        public List<int> GetLikedProfiles(UserProfile senderProfile)
+        {
+            List<int> profiles = new();
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetReceiversBySenderID", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@SenderID", SqlDbType.UniqueIdentifier).Value = senderProfile.ID;
+                using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        profiles.Add((int)sdr["ReceiverID"]);
+                    }
+                }
+
+                sqlCon.Close();
+                return profiles;
+            }
+        }
+
+        public bool DislikeProfile(UserProfile senderProfile, UserProfile receiverProfile)
+        {
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_Dislike", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@SenderID", SqlDbType.UniqueIdentifier).Value = senderProfile.ID;
+                sql_cmnd.Parameters.AddWithValue("@ReceiverID", SqlDbType.UniqueIdentifier).Value = receiverProfile.ID;
+                int deleted = sql_cmnd.ExecuteNonQuery();
+                sqlCon.Close();
+                if (deleted == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public List<UserProfile> GetMatchedProfiles(UserProfile senderProfile)
+        {
+            List<UserProfile> profiles = new();
+            string? SqlconString = connectionstring;
+            using (var sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("usp_GetMatchedProfiles", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@currentID", SqlDbType.UniqueIdentifier).Value = senderProfile.ID;
+                using (SqlDataReader sdr = sql_cmnd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        UserProfile userProfile = new()
+                        {
+                            ID = (int)sdr["ID"],
+                            FirstName = (string)sdr["FirstName"],
+                            LastName = (string)sdr["LastName"],
+                            DoB = (DateTime)sdr["DoB"],
+                            Gender = (string)sdr["Gender"],
+                            AccountID = (int)sdr["AccountID"],
+                            ZipcodeID = (string)sdr["ZipcodeID"]
+                        };
+
+                        if (!sdr.IsDBNull(sdr.GetOrdinal("ProfileText")))
+                        {
+                            userProfile.ProfileText = (string)sdr["ProfileText"];
+                        }
+
+                        profiles.Add(userProfile);
+                    }
+                }
+
+                sqlCon.Close();
+                return profiles;
+            }
+        }
     }
 }
